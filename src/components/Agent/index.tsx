@@ -4,8 +4,25 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import prolog from "react-syntax-highlighter/dist/cjs/languages/prism/prolog";
+import typescript from "react-syntax-highlighter/dist/cjs/languages/prism/typescript";
+import javascript from "react-syntax-highlighter/dist/cjs/languages/prism/javascript";
+import tsx from "react-syntax-highlighter/dist/cjs/languages/prism/tsx";
+import python from "react-syntax-highlighter/dist/cjs/languages/prism/python";
+import json from "react-syntax-highlighter/dist/cjs/languages/prism/json";
+import bash from "react-syntax-highlighter/dist/cjs/languages/prism/bash";
+import markdown from "react-syntax-highlighter/dist/cjs/languages/prism/markdown";
+
+SyntaxHighlighter.registerLanguage("prolog", prolog);
+SyntaxHighlighter.registerLanguage("typescript", typescript);
+SyntaxHighlighter.registerLanguage("javascript", javascript);
+SyntaxHighlighter.registerLanguage("tsx", tsx);
+SyntaxHighlighter.registerLanguage("python", python);
+SyntaxHighlighter.registerLanguage("json", json);
+SyntaxHighlighter.registerLanguage("bash", bash);
+SyntaxHighlighter.registerLanguage("markdown", markdown);
 import { sendMessage } from "@/app/actions";
 import { SendButton } from "../SendButton";
 
@@ -52,8 +69,22 @@ export const Agent = () => {
     // Add user message immediately
     setMessages((prev) => [...prev, { role: "user", content: currentMessage }]);
 
+    const historyPayload = [
+      ...messages,
+      { role: "user", content: currentMessage } as Message,
+    ]
+      .map((msg) => {
+        if (msg.role === "user") {
+          return `[INICIO_MENSAGEM_USER]${msg.content}[FIM_MENSAGEM_USER]`;
+        }
+        return `[INICIO_MENSAGEM_AGENT]${msg.content}[FIM_MENSAGEM_AGENT]`;
+      })
+      .join("\n");
+
+    console.log(historyPayload);
+
     try {
-      const response = await sendMessage(currentMessage);
+      const response = await sendMessage(historyPayload);
       if (response) {
         setMessages((prev) => [
           ...prev,
@@ -65,7 +96,7 @@ export const Agent = () => {
     } finally {
       setLoading(false);
     }
-  }, [message]);
+  }, [message, messages]);
 
   return (
     <>
@@ -104,6 +135,7 @@ export const Agent = () => {
                         style={vscDarkPlus}
                         language={match[1]}
                         PreTag="div"
+                        className="scrollbar-cyan !mt-2 !mb-2 rounded-md !bg-[#1e1e1e]"
                       >
                         {String(children).replace(/\n$/, "")}
                       </SyntaxHighlighter>

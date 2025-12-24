@@ -7,6 +7,7 @@ body {
 
 .scrollbar-cyan::-webkit-scrollbar {
   width: 2px;
+  height: 4px;
 }
 
 .scrollbar-cyan::-webkit-scrollbar-track {

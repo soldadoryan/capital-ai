@@ -5,6 +5,7 @@ import { IconButton } from "@/components/IconButton";
 import { LogoutButton } from "@/components/LogoutButton";
 import Agent from "@/components/Agent";
 import Image from "next/image";
+import { ClearButton } from "@/components/ClearButton";
 
 export default async function Chat() {
   const session = await auth();
@@ -34,6 +35,7 @@ export default async function Chat() {
             </p>
           </div>
           <div className="flex gap-2 self-end md:self-auto">
+            <ClearButton />
             <LogoutButton />
           </div>
         </div>

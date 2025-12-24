@@ -18,7 +18,7 @@ export default function Home() {
             alt="Logo"
             width={150}
             height={150}
-            className="w-32 h-32 md:w-[150px] md:h-[150px]"
+            className="w-32 h-32 md:w-37.5 md:h-37.5"
           />
           <h1 className="text-3xl md:text-5xl font-bold text-white mb-6 text-center">
             Chat<span className="text-cyan-500">CPT</span>
