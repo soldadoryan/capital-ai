@@ -10,7 +10,7 @@ const ubuntu = Ubuntu({
 });
 
 export const metadata: Metadata = {
-  title: "Capital IA - Ferramenta de Suporte",
+  title: "ChatCPT - Ferramenta de Suporte",
   description: "by an4log",
 };
 
